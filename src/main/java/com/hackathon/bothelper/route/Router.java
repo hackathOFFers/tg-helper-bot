@@ -2,7 +2,7 @@ package com.hackathon.bothelper.route;
 
 
 import com.hackathon.bothelper.domain.ResponseMessage;
-import com.hackathon.bothelper.route.routes.Handler;
+import com.hackathon.bothelper.route.handlers.Handler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

@@ -1,4 +1,4 @@
-package com.hackathon.bothelper.route.routes;
+package com.hackathon.bothelper.route.handlers;
 
 import com.hackathon.bothelper.domain.ResponseMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;

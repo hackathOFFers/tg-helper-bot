@@ -1,4 +1,4 @@
-package com.hackathon.bothelper.route.routes;
+package com.hackathon.bothelper.route.handlers;
 
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
@@ -12,8 +12,9 @@ import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
-public class PrinterHandler implements Handler {
-    @Value("${printer}")
+public class StartHandler implements Handler {
+
+    @Value("${start}")
     private int handlerPropertyIndex;
 
     private final BotProperties botProperties;
@@ -31,8 +32,7 @@ public class PrinterHandler implements Handler {
     }
 
     @Override
-    public ResponseMessage getMessageForReply(Message message, TelegramLongPollingBot hackathonBot) {
+    public ResponseMessage getMessageForReply(final Message message, final TelegramLongPollingBot hackathonBot) {
         return new ResponseMessage(message.getChatId().toString(), properties.getValue());
     }
-
 }

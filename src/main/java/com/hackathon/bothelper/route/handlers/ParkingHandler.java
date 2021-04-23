@@ -1,4 +1,4 @@
-package com.hackathon.bothelper.route.routes;
+package com.hackathon.bothelper.route.handlers;
 
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
@@ -55,16 +55,7 @@ public class ParkingHandler implements Handler {
 
         final int amountOfAvailablePlaces = getRandomNumber(1, 13);
 
-        final String availablePlaces = IntStream
-                .range(0, amountOfAvailablePlaces)
-                .mapToObj(x -> String.valueOf(nums.get(x)) + letters.get(x))
-                .collect(Collectors.joining(", "));
-        final String unavailablePlaces = IntStream
-                .range(amountOfAvailablePlaces, 26)
-                .mapToObj(x -> String.valueOf(nums.get(x)) + letters.get(x))
-                .collect(Collectors.joining(", "));
-
         return new ResponseMessage(message.getChatId().toString(),
-                MessageFormat.format(properties.getValue(), availablePlaces, unavailablePlaces, 26));
+                MessageFormat.format(properties.getValue(), amountOfAvailablePlaces, 26-amountOfAvailablePlaces, 26));
     }
 }

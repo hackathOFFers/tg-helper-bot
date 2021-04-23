@@ -1,5 +1,6 @@
 package com.hackathon.bothelper.config.bots;
 
+import com.hackathon.bothelper.config.TextToButtonTransformer;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.route.Router;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class HackathonBot extends TelegramLongPollingSessionBot {
 
     private final Router router;
 
+    private final TextToButtonTransformer transformer;
+
     @Override
     public String getBotUsername() {
         return username;
@@ -37,25 +40,14 @@ public class HackathonBot extends TelegramLongPollingSessionBot {
     }
 
     @Override
-    public void onUpdateReceived(final Update update) {
+    public void onUpdateReceived(final Update update, final Optional<Session> optional) {
         final ResponseMessage msg = router.route(update, this);
-        SendMessage reply = new SendMessage();
+        final SendMessage reply = new SendMessage();
         reply.setChatId(msg.getId());
         reply.setText(msg.getBody());
         reply.setParseMode("Markdown");
-        try {
-            execute(reply);
-        } catch (TelegramApiException e) {
-            throw new IllegalStateException("Can't send message");
-        }
-    }
 
-    @Override
-    public void onUpdateReceived(final Update update, final Optional<Session> optional) {
-        final ResponseMessage msg = router.route(update, this);
-        SendMessage reply = new SendMessage();
-        reply.setChatId(msg.getId());
-        reply.setText(msg.getBody());
+        reply.setReplyMarkup(transformer.transform(update));
         try {
             execute(reply);
         } catch (TelegramApiException e) {

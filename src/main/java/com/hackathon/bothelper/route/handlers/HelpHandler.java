@@ -1,4 +1,4 @@
-package com.hackathon.bothelper.route.routes;
+package com.hackathon.bothelper.route.handlers;
 
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
@@ -12,9 +12,9 @@ import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
-public class GreetingHandler implements Handler {
+public class HelpHandler implements Handler {
 
-    @Value("${greeting}")
+    @Value("${help}")
     private int handlerPropertyIndex;
 
     private final BotProperties botProperties;
@@ -36,13 +36,16 @@ public class GreetingHandler implements Handler {
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < botProperties.getHandlerProperties().size(); i++) {
             final BotProperties.HandlerProperties handlerProperties = botProperties.getHandlerProperties().get(i);
+            if (handlerProperties.getKey().equals("/start")) {
+                continue;
+            }
             if (i > 0) {
                 sb.append("\n");
             }
-            sb.append(handlerProperties.getKey());
+            sb.append("*" + handlerProperties.getKey() + "*");
             sb.append(" ");
             sb.append(handlerProperties.getDescription());
         }
-        return new ResponseMessage(message.getChatId().toString(), properties.getValue() + "\n" + sb.toString());
+        return new ResponseMessage(message.getChatId().toString(), sb.toString());
     }
 }
