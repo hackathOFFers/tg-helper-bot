@@ -1,0 +1,14 @@
+greeting: 0
+parking: 1
+printer: 2
+message:
+  handlerProperties:
+    - description: Возвращает пользователю все доступные команды
+      key: /start
+      value: "Привет, я бот помощник. Я умею :"
+    - description: Возвращает пользователю информацию про парковочные места
+      key: /parking
+      value: "*Свободные места*: {0}\n\n*Занятые места*: {1}\n\n*Всего мест*: {2}"
+    - description: Печатает документы которые вы приложите к команде
+      key: /printing
+      value: "Распечатано страниц: "
