@@ -1,10 +1,15 @@
 package com.hackathon.bothelper.route.handlers;
 
+import com.hackathon.bothelper.domain.ParkingServiceGetResponse;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
+import com.hackathon.bothelper.utils.BotUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -18,6 +23,9 @@ import java.util.stream.IntStream;
 @Component
 @RequiredArgsConstructor
 public class ParkingHandler implements Handler {
+
+    @Value("${url}")
+    private String url;
 
     private final List<Integer> nums = IntStream.range(1, 27).boxed().collect(Collectors.toList());
 
@@ -42,20 +50,22 @@ public class ParkingHandler implements Handler {
     }
 
     @Override
+    public boolean isSuitableFor(final Message message, final Session session1) {
+        return isSuitableFor(message);
+    }
     public boolean isSuitableFor(final Message message) {
         return properties.getKey().equals(message.getText());
     }
 
-    public int getRandomNumber(final int min, final int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
-
     @Override
-    public ResponseMessage getMessageForReply(Message message, TelegramLongPollingBot hackathonBot) {
+    public ResponseMessage getMessageForReply(final Message message) {
 
-        final int amountOfAvailablePlaces = getRandomNumber(1, 13);
+        final int amountOfAvailablePlaces = BotUtils.getRandomNumber(1, 13);
+        final RestTemplate restTemplate = new RestTemplate();
+
+        final ParkingServiceGetResponse body = restTemplate.getForEntity(url, ParkingServiceGetResponse.class).getBody();
 
         return new ResponseMessage(message.getChatId().toString(),
-                MessageFormat.format(properties.getValue(), amountOfAvailablePlaces, 26-amountOfAvailablePlaces, 26));
+                MessageFormat.format(properties.getValue(), body.getFree(), body.getTaken(), body.getTotal()));
     }
 }

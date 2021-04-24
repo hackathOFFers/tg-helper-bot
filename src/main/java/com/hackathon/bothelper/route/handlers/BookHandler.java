@@ -3,6 +3,7 @@ package com.hackathon.bothelper.route.handlers;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
 import lombok.RequiredArgsConstructor;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -25,13 +26,17 @@ public class BookHandler implements Handler {
         properties = botProperties.getHandlerProperties().get(handlerPropertyIndex);
     }
 
-    @Override
     public boolean isSuitableFor(final Message message) {
         return properties.getKey().equals(message.getText());
     }
 
     @Override
-    public ResponseMessage getMessageForReply(Message message, TelegramLongPollingBot hackathonBot) {
+    public boolean isSuitableFor(final Message message, final Session session1) {
+        return isSuitableFor(message);
+    }
+
+    @Override
+    public ResponseMessage getMessageForReply(final Message message) {
         return new ResponseMessage(message.getChatId().toString(), properties.getValue());
     }
 
