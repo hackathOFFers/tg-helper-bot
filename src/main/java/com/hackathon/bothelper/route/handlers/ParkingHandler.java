@@ -24,7 +24,7 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class ParkingHandler implements Handler {
 
-    @Value("${url}")
+    @Value("${url_get_place}")
     private String url;
 
     private final List<Integer> nums = IntStream.range(1, 27).boxed().collect(Collectors.toList());

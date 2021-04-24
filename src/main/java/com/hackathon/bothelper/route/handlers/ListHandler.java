@@ -1,5 +1,6 @@
 package com.hackathon.bothelper.route.handlers;
 
+import com.hackathon.bothelper.domain.BookInfo;
 import com.hackathon.bothelper.domain.BookRequest;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
@@ -9,17 +10,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 import javax.annotation.PostConstruct;
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class BookHandler implements Handler {
-    @Value("${book}")
+public class ListHandler implements Handler {
+    @Value("${list}")
     private int handlerPropertyIndex;
 
-    @Value("${url_book}")
+    @Value("${url_list}")
     private String url;
 
     private final BotProperties botProperties;
@@ -44,13 +47,9 @@ public class BookHandler implements Handler {
     public ResponseMessage getMessageForReply(final Message message) {
         final RestTemplate restTemplate = new RestTemplate();
 
-        final BookRequest request = new BookRequest();
-        final User from = message.getFrom();
-        final String userName = from.getUserName();
-        request.setId(userName == null ? from.getFirstName() + " " + from.getLastName() : userName );
-
-        restTemplate.postForObject(url, request, Void.class);
-        return new ResponseMessage(message.getChatId().toString(), properties.getValue());
+        final BookInfo[] reservations = restTemplate.getForObject(url, BookInfo[].class);
+        final String collect = Arrays.stream(reservations).map(BookInfo::toString).collect(Collectors.joining("\n"));
+        return new ResponseMessage(message.getChatId().toString(), MessageFormat.format(properties.getValue(), collect));
     }
 
 }
