@@ -1,7 +1,6 @@
 package com.hackathon.bothelper.route.handlers;
 
-import com.hackathon.bothelper.domain.BookInfo;
-import com.hackathon.bothelper.domain.BookRequest;
+import com.hackathon.bothelper.domain.ReservationInfo;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +46,8 @@ public class ListHandler implements Handler {
     public ResponseMessage getMessageForReply(final Message message) {
         final RestTemplate restTemplate = new RestTemplate();
 
-        final BookInfo[] reservations = restTemplate.getForObject(url, BookInfo[].class);
-        final String collect = Arrays.stream(reservations).map(BookInfo::toString).collect(Collectors.joining("\n"));
+        final ReservationInfo[] reservations = restTemplate.getForObject(url, ReservationInfo[].class);
+        final String collect = Arrays.stream(reservations).map(ReservationInfo::toString).collect(Collectors.joining("\n"));
         return new ResponseMessage(message.getChatId().toString(), MessageFormat.format(properties.getValue(), collect));
     }
 

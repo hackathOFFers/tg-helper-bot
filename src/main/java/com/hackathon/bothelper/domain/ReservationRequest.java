@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BookRequest {
+public class ReservationRequest {
     private String id;
 }

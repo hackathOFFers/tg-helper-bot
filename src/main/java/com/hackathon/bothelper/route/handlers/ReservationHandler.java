@@ -1,6 +1,6 @@
 package com.hackathon.bothelper.route.handlers;
 
-import com.hackathon.bothelper.domain.BookRequest;
+import com.hackathon.bothelper.domain.ReservationRequest;
 import com.hackathon.bothelper.domain.ResponseMessage;
 import com.hackathon.bothelper.props.BotProperties;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor
-public class BookHandler implements Handler {
-    @Value("${book}")
+public class ReservationHandler implements Handler {
+    @Value("${reservation}")
     private int handlerPropertyIndex;
 
-    @Value("${url_book}")
+    @Value("${url_reservation}")
     private String url;
 
     private final BotProperties botProperties;
@@ -44,7 +44,7 @@ public class BookHandler implements Handler {
     public ResponseMessage getMessageForReply(final Message message) {
         final RestTemplate restTemplate = new RestTemplate();
 
-        final BookRequest request = new BookRequest();
+        final ReservationRequest request = new ReservationRequest();
         final User from = message.getFrom();
         final String userName = from.getUserName();
         request.setId(userName == null ? from.getFirstName() + " " + from.getLastName() : userName );

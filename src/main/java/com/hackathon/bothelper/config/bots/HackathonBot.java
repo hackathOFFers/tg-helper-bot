@@ -19,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class HackathonBot extends TelegramLongPollingSessionBot {
 
-
     @Value("${username}")
     private String username;
 
@@ -43,7 +42,7 @@ public class HackathonBot extends TelegramLongPollingSessionBot {
     @Override
     public void onUpdateReceived(final Update update, final Optional<Session> session) {
         final Session session1 = session.get();
-
+        session1.setTimeout(60*60*24);
         final ResponseMessage msg = router.route(update, session1);
         final SendMessage reply = new SendMessage();
 

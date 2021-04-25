@@ -3,9 +3,10 @@ parking: 1
 printer: 2
 start: 3
 help: 4
-book: 5
+reservation : 5
 print: 6
 list: 7
+
 
 message:
   handlerProperties:

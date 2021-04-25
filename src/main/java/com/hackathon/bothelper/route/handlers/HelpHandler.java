@@ -39,9 +39,6 @@ public class HelpHandler implements Handler {
     public ResponseMessage getMessageForReply(final Message message) {
         final StringBuilder sb = new StringBuilder();
         for (int i = 0; i < botProperties.getHandlerProperties().size(); i++) {
-            if(i>0){
-                sb.append("\n");
-            }
             final BotProperties.HandlerProperties handlerProperties = botProperties.getHandlerProperties().get(i);
             if (handlerProperties.getKey().equals("/start")) {
                 continue;
@@ -50,7 +47,7 @@ public class HelpHandler implements Handler {
                 continue;
             }
             if (i > 0) {
-                sb.append("\n");
+                sb.append("\n\n");
             }
             sb.append("*").append(handlerProperties.getKey()).append("*");
             sb.append(": ");

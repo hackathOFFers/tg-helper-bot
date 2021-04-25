@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class BookInfo {
+public class ReservationInfo {
     private String id;
     private String timeStamp;
 

@@ -4,16 +4,16 @@ import java.util.List;
 
 public enum CommandGraph {
     START("В начало"), START_DIALOG("/start"), PARK("Парковка"),
-    PRINT("Принтер"), BOOK("Забронировать"), HELP("Помощь"),
+    PRINT("Принтер"), RESERVATION("Забронировать"), HELP("Помощь"),
     LIST("Кто забронировал?");
 
     static {
         START.setNextCommands(List.of(PARK, PRINT, HELP));
         PRINT.setNextCommands(List.of(START));
-        PARK.setNextCommands(List.of(BOOK, LIST, START));
+        PARK.setNextCommands(List.of(RESERVATION, LIST, START));
         START_DIALOG.setNextCommands(START.getNextCommands());
         HELP.setNextCommands(List.of(PARK, PRINT, START));
-        BOOK.setNextCommands(List.of(LIST, START));
+        RESERVATION.setNextCommands(List.of(LIST, START));
         LIST.setNextCommands(START.getNextCommands());
 
     }
